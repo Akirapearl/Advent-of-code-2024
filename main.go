@@ -4,6 +4,7 @@ import (
 	"bufio"
 	"fmt"
 	"os"
+	"strconv"
 	"strings"
 )
 
@@ -75,13 +76,15 @@ func main() {
 	// Needed variables
 	//totalPossible := 0
 
+	var green, red, blue int
+
 	scanner := bufio.NewScanner(file)
 	scanner.Split(bufio.ScanLines)
 
 	for scanner.Scan() {
 		x := scanner.Text()
 
-		// Split by : to get each subset
+		// Split by ":" to isolate the game ID & cube information
 		parts := strings.Split(x, ":")
 		gameIDPart := parts[0]
 		subsetsPart := parts[1] // e.g., "3 blue, 4 red; 1 red, 2 green, 6 blue; 2 green"
@@ -89,7 +92,27 @@ func main() {
 		// Extract the game ID from "Game X"
 		gameID := strings.TrimSpace(strings.TrimPrefix(gameIDPart, "Game "))
 		fmt.Println(gameID)
-		fmt.Printf(subsetsPart)
+		subsets := strings.Split(subsetsPart, ";")
+
+		for _, subset := range subsets {
+			colorCounts := strings.Split(subset, ",")
+
+			for _, colorCount := range colorCounts {
+				colorData := strings.Fields(strings.TrimSpace(colorCount))
+
+				count, err := strconv.Atoi(colorData[0])
+				check(err)
+				// Assuming colorData[0] is the count and colorData[1] is the color
+				if colorData[1] == "green" {
+					green += count
+				} else if colorData[1] == "red" {
+					red += count
+				} else if colorData[1] == "blue" {
+					blue += count
+				}
+				fmt.Printf("Green: %d, Red: %d, Blue: %d\n", green, red, blue)
+			}
+		}
 	}
 
 }
