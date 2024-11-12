@@ -126,7 +126,7 @@ func main() {
 				break
 			}
 		}
-		fmt.Println(isWin)
+		//fmt.Println(isWin)
 
 		isGameID, err := strconv.Atoi(gameID)
 		check(err)
