@@ -74,11 +74,10 @@ func main() {
 	TotalColors.green = 13
 	TotalColors.blue = 14
 
-	// Needed variables
-	//totalPossible := 0
-
 	scanner := bufio.NewScanner(file)
 	scanner.Split(bufio.ScanLines)
+
+	//count := 0
 
 	for scanner.Scan() {
 		x := scanner.Text()
@@ -100,17 +99,33 @@ func main() {
 		// Find all matches
 		matches := re.FindAllStringSubmatch(subsetsPart, -1)
 
+		myInt := []int{}
+		var isWin bool
+
 		for _, match := range matches {
-			//fmt.Println(match[1], match[2])
 			actualcount, err := strconv.Atoi(match[1])
 			check(err)
 			if !(actualcount >= TotalColors.red) && match[2] == "red" {
-				fmt.Println(match[1], match[2])
+				isWin = true
+
 			} else if !(actualcount >= TotalColors.green) && match[2] == "green" {
-				fmt.Println(match[1], match[2])
+				isWin = true
+
 			} else if !(actualcount >= TotalColors.blue) && match[2] == "blue" {
-				fmt.Println(match[1], match[2])
+				isWin = true
+
+			} else {
+				isWin = false
+
+				break
 			}
+		}
+		//fmt.Println(isWin)
+		isGameID, err := strconv.Atoi(gameID)
+		check(err)
+		if isWin {
+			myInt = append(myInt, isGameID)
+			fmt.Println(myInt)
 		}
 
 	}
