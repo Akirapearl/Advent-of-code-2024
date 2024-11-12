@@ -4,6 +4,8 @@ import (
 	"bufio"
 	"fmt"
 	"os"
+	"regexp"
+	"strconv"
 	"strings"
 )
 
@@ -82,14 +84,35 @@ func main() {
 		x := scanner.Text()
 
 		// Split by : to get each subset
-		parts := strings.Split(x, ":")
+		parts := strings.Split(x, ": ")
 		gameIDPart := parts[0]
 		subsetsPart := parts[1] // e.g., "3 blue, 4 red; 1 red, 2 green, 6 blue; 2 green"
 
 		// Extract the game ID from "Game X"
 		gameID := strings.TrimSpace(strings.TrimPrefix(gameIDPart, "Game "))
-		fmt.Println(gameID)
-		fmt.Printf(subsetsPart)
+		fmt.Println("GAME ======= ", gameID)
+		//fmt.Println(subsetsPart)
+
+		// "Does at any point the elf show you more than 12 red, 13 green, or 14 blue cubes at one time? If not, the game is valid."
+
+		// Get the amount - colour pair via regex
+		re := regexp.MustCompile(`(\d+) (\w+)`)
+		// Find all matches
+		matches := re.FindAllStringSubmatch(subsetsPart, -1)
+
+		for _, match := range matches {
+			//fmt.Println(match[1], match[2])
+			actualcount, err := strconv.Atoi(match[1])
+			check(err)
+			if !(actualcount >= TotalColors.red) && match[2] == "red" {
+				fmt.Println(match[1], match[2])
+			} else if !(actualcount >= TotalColors.green) && match[2] == "green" {
+				fmt.Println(match[1], match[2])
+			} else if !(actualcount >= TotalColors.blue) && match[2] == "blue" {
+				fmt.Println(match[1], match[2])
+			}
+		}
+
 	}
 
 }
