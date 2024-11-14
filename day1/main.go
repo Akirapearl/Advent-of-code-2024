@@ -67,7 +67,6 @@ func main() {
 		for _, value := range word {
 			if valueInt, err := strconv.Atoi(value); err == nil {
 				myInt = append(myInt, valueInt)
-				//fmt.Println(myInt)
 			}
 		} // end for - store numbers
 
